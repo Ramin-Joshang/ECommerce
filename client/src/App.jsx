@@ -8,12 +8,13 @@ import Products from "./pages/admin/Products"
 import Orders from "./pages/admin/Orders"
 import Features from "./pages/admin/Features"
 import ShopLayout from "./components/shop/ShopLayout"
-import NotFound from "./store/error/NotFound"
+import NotFound from "./pages/error/NotFound"
 import Checkout from "./pages/cart/Checkout"
 import Account from "./pages/account/Account"
 import List from "./pages/shop/List"
 import Home from "./pages/home/Home"
 import CheckAuth from "./components/common/CheckAuth"
+import AccessDenied from "./pages/error/AccessDenied"
 
 
 function App() {
@@ -35,7 +36,7 @@ function App() {
           <Route path="register" element={<Register />} />
         </Route>
         <Route path="/admin" element={
-          <CheckAuth isAuthenticated={true} user={{ name: "Ramin", role: "admin" }}>
+          <CheckAuth isAuthenticated={true} user={{ name: "Ramin", role: "user" }}>
             <AdminLayout />
           </CheckAuth>
         } >
@@ -50,6 +51,7 @@ function App() {
         <Route path="/account" element={<Account />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="*" element={<NotFound />} />
+        <Route path="/access-denied" element={<AccessDenied />} />
       </Routes>
     </div>
   )

@@ -14,7 +14,7 @@ const CheckAuth = ({ isAuthenticated, user, children }) => {
             return <Navigate to="/" />
         }
     }
-    if (isAuthenticated && user?.role !== "user" && location.pathname.includes("admin")) {
+    if (isAuthenticated && user?.role === "user" && location.pathname.includes("admin")) {
         return <Navigate to="/access-denied" />
     }
     if (isAuthenticated && user?.role === "admin" && location.pathname.includes("/")) {
