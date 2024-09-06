@@ -9,17 +9,31 @@ const Form = ({ formData, handleInputChange, handleSubmit, buttonText, isBtnDisa
     return (
         <form onSubmit={handleSubmit}>
             <div className="flex flex-col gap-3">
-                {pathname.includes("/register") &&
-                    <div className="grid w-full gap-1.5" >
-                        <label className="mb-1" htmlFor="username">نام کاربری</label>
-                        <Input
-                            name="username"
-                            id="username"
-                            placeholder="نام کاربری خود را وارد کنید"
-                            type="text"
-                            value={formData.username}
-                            onChange={handleInputChange}
-                        />
+                {
+                    pathname.includes("/register") &&
+                    <div className="grid grid-cols-2 gap-5">
+                        <div className="grid w-full gap-1.5" >
+                            <label className="mb-1" htmlFor="name">نام</label>
+                            <Input
+                                name="name"
+                                id="name"
+                                placeholder="نام خود را وارد کنید"
+                                type="text"
+                                value={formData.name}
+                                onChange={handleInputChange}
+                            />
+                        </div>
+                        <div className="grid w-full gap-1.5" >
+                            <label className="mb-1" htmlFor="family">نام خانوادگی</label>
+                            <Input
+                                name="family"
+                                id="family"
+                                placeholder="نام خانوادگی خود را وارد کنید"
+                                type="text"
+                                value={formData.family}
+                                onChange={handleInputChange}
+                            />
+                        </div>
                     </div>
                 }
                 <div className="grid w-full gap-1.5" >
@@ -44,6 +58,20 @@ const Form = ({ formData, handleInputChange, handleSubmit, buttonText, isBtnDisa
                         onChange={handleInputChange}
                     />
                 </div>
+                {
+                    pathname.includes("/register") &&
+                    <div className="grid w-full gap-1.5" >
+                        <label className="mb-1" htmlFor="passwordConfirm">تکرار رمز عبور</label>
+                        <Input
+                            name="passwordConfirm"
+                            id="passwordConfirm"
+                            placeholder="تکرار رمز عبور خود را وارد کنید"
+                            type="passwordConfirm"
+                            value={formData.passwordConfirm}
+                            onChange={handleInputChange}
+                        />
+                    </div>
+                }
             </div>
             <Button disabled={isBtnDisabled} type="submit" className="mt-4 w-full">
                 {buttonText}

@@ -1,13 +1,23 @@
 import Form from "@/components/auth/Form";
+import { register } from "@/store/auth/authSlice";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Register = () => {
+
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
     const [formData, setFormData] = useState({
-        username: "sdf",
+        name: "",
+        family: "",
         email: "",
         password: "",
+        passwordConfirm: ""
     });
+
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData(prevFormData => ({
@@ -15,11 +25,18 @@ const Register = () => {
             [name]: value,
         }));
     };
-    const handleSubmit = e => {
+
+    const handleSubmit = async e => {
         e.preventDefault();
         console.log(formData);
+        const response = await dispatch(register(formData))
+        if (response?.payload?.status === "success") {
+            toast.success(response?.payload?.message)
+            navigate("/auth/login")
+        } else {
+            toast.error(response?.payload?.message)
+        }
     }
-    console.log(formData);
 
     return (
         <div className="mx-auto w-full max-w-md space-y-6">

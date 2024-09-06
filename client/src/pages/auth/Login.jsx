@@ -1,8 +1,15 @@
 import Form from "@/components/auth/Form";
+import { login } from "@/store/auth/authSlice";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Login = () => {
+
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
     const [formData, setFormData] = useState({
         email: "",
         password: "",
@@ -14,9 +21,16 @@ const Login = () => {
             [name]: value,
         }));
     };
-    const handleSubmit = e => {
+    const handleSubmit = async e => {
         e.preventDefault();
         console.log(formData);
+        const response = await dispatch(login(formData))
+        if (response?.payload?.status === "success") {
+            toast.success(response?.payload?.message)
+            navigate("/")
+        } else {
+            toast.error(response?.payload?.message)
+        }
     }
     console.log(formData);
 
