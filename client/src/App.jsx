@@ -19,8 +19,6 @@ import AccessDenied from "./pages/error/AccessDenied"
 
 function App() {
 
-
-
   return (
     <div className="flex flex-col overflow-hidden bg-white">
       {/*  common component */}
@@ -28,7 +26,7 @@ function App() {
 
       <Routes>
         <Route path="/auth" element={
-          <CheckAuth isAuthenticated={true} user={{ name: "Ramin", role: "user" }}>
+          <CheckAuth >
             <AuthLayout />
           </CheckAuth>
         } >
@@ -36,7 +34,7 @@ function App() {
           <Route path="register" element={<Register />} />
         </Route>
         <Route path="/admin" element={
-          <CheckAuth isAuthenticated={true} user={{ name: "Ramin", role: "user" }}>
+          <CheckAuth >
             <AdminLayout />
           </CheckAuth>
         } >
@@ -46,7 +44,9 @@ function App() {
           <Route path="features" element={<Features />} />
         </Route>
         <Route path="/shop" element={<ShopLayout />} />
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={
+          <CheckAuth><Home /></CheckAuth>
+        } />
         <Route path="/list" element={<List />} />
         <Route path="/account" element={<Account />} />
         <Route path="/checkout" element={<Checkout />} />

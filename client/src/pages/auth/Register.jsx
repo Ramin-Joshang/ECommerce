@@ -1,5 +1,5 @@
 import Form from "@/components/auth/Form";
-import { register } from "@/store/auth/authSlice";
+import { register } from "@/store/actions/authActions";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
