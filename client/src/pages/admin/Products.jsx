@@ -1,4 +1,5 @@
 // import ProductImageUpload from "@/components/admin-view/image-upload";
+import ProductImageUpload from "@/components/admin/ProductImageUpload";
 import ProductTile from "@/components/admin/ProductTitle";
 // import CommonForm from "@/components/common/form";
 import { Button } from "@/components/ui/button";
@@ -9,15 +10,17 @@ import {
     SheetTitle,
 } from "@/components/ui/sheet";
 // import { useToast } from "@/components/ui/use-toast";
-import { addProductFormElements } from "@/config";
-import {
-    addNewProduct,
-    deleteProduct,
-    editProduct,
-    fetchAllProducts,
-} from "@/store/admin/products-slice";
+// import { addProductFormElements } from "@/config";
+import { getAllProducts } from "@/store/actions/productActions";
+// import {
+//     addNewProduct,
+//     deleteProduct,
+//     editProduct,
+//     fetchAllProducts,
+// } from "@/store/admin/products-slice";
 import { Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
 const initialFormData = {
     image: null,
@@ -32,17 +35,15 @@ const initialFormData = {
 };
 
 function Products() {
-    const [openCreateProductsDialog, setOpenCreateProductsDialog] =
-        useState(false);
+    const [openCreateProductsDialog, setOpenCreateProductsDialog] = useState(false);
     const [formData, setFormData] = useState(initialFormData);
     const [imageFile, setImageFile] = useState(null);
     const [uploadedImageUrl, setUploadedImageUrl] = useState("");
     const [imageLoadingState, setImageLoadingState] = useState(false);
     const [currentEditedId, setCurrentEditedId] = useState(null);
 
-    const { productList } = useSelector((state) => state.adminProducts);
+    const productList = useSelector((state) => state.product.products);
     const dispatch = useDispatch();
-    const { toast } = useToast();
 
     function onSubmit(event) {
         event.preventDefault();
@@ -57,7 +58,7 @@ function Products() {
                 console.log(data, "edit");
 
                 if (data?.payload?.success) {
-                    dispatch(fetchAllProducts());
+                    dispatch(getAllProducts());
                     setFormData(initialFormData);
                     setOpenCreateProductsDialog(false);
                     setCurrentEditedId(null);
@@ -70,13 +71,11 @@ function Products() {
                 })
             ).then((data) => {
                 if (data?.payload?.success) {
-                    dispatch(fetchAllProducts());
+                    dispatch(getAllProducts());
                     setOpenCreateProductsDialog(false);
                     setImageFile(null);
                     setFormData(initialFormData);
-                    toast({
-                        title: "Product add successfully",
-                    });
+                    toast.success("محصول با موفقیت اضافه شد.")
                 }
             });
     }
@@ -84,7 +83,7 @@ function Products() {
     function handleDelete(getCurrentProductId) {
         dispatch(deleteProduct(getCurrentProductId)).then((data) => {
             if (data?.payload?.success) {
-                dispatch(fetchAllProducts());
+                dispatch(getAllProducts());
             }
         });
     }
@@ -97,11 +96,11 @@ function Products() {
     }
 
     useEffect(() => {
-        dispatch(fetchAllProducts());
+        dispatch(getAllProducts());
     }, [dispatch]);
 
     console.log(formData, "productList");
-
+    console.log(productList.data.data)
     return (
         <Fragment>
             <div className="mb-5 w-full flex justify-end">
@@ -110,9 +109,10 @@ function Products() {
                 </Button>
             </div>
             <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-4">
-                {productList && productList.length > 0
-                    ? productList.map((productItem) => (
+                {productList && productList.data.data.length > 0
+                    ? productList.data.data.map((productItem) => (
                         <ProductTile
+                            key={productItem._id}
                             setFormData={setFormData}
                             setOpenCreateProductsDialog={setOpenCreateProductsDialog}
                             setCurrentEditedId={setCurrentEditedId}
@@ -120,7 +120,7 @@ function Products() {
                             handleDelete={handleDelete}
                         />
                     ))
-                    : null}
+                    : <h1>محصولی وجود ندارد</h1>}
             </div>
             <Sheet
                 open={openCreateProductsDialog}
@@ -145,7 +145,7 @@ function Products() {
                         imageLoadingState={imageLoadingState}
                         isEditMode={currentEditedId !== null}
                     />
-                    <div className="py-6">
+                    {/* <div className="py-6">
                         <CommonForm
                             onSubmit={onSubmit}
                             formData={formData}
@@ -154,7 +154,7 @@ function Products() {
                             formControls={addProductFormElements}
                             isBtnDisabled={!isFormValid()}
                         />
-                    </div>
+                    </div> */}
                 </SheetContent>
             </Sheet>
         </Fragment>
