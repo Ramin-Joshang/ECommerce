@@ -74,10 +74,11 @@ const login = async (req, res) => {
             }
         }
     } catch (error) {
-        console.log("errorrrrrrrr")
         sendResponse(res, "مشکلی در ارتباط با سرور پیش آمد.")
     }
 };
+
+
 // * Logout
 
 // * Middleware

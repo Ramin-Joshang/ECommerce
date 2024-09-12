@@ -21,9 +21,6 @@ function App() {
 
   return (
     <div className="flex flex-col overflow-hidden bg-white">
-      {/*  common component */}
-      <h1>Header component</h1>
-
       <Routes>
         <Route path="/auth" element={
           <CheckAuth >
@@ -45,7 +42,9 @@ function App() {
         </Route>
         <Route path="/shop" element={<ShopLayout />} />
         <Route path="/" element={
-          <CheckAuth><Home /></CheckAuth>
+          <CheckAuth>
+            <Home />
+          </CheckAuth>
         } />
         <Route path="/list" element={<List />} />
         <Route path="/account" element={<Account />} />

@@ -1,5 +1,7 @@
 const express = require('express');
 const authRouter = require("./routes/auth/authRoutes")
+const productRouter = require("./routes/shop/productRoutes")
+const categoryRouter = require("./routes/shop/categoryRoutes")
 const dotenv = require('dotenv');
 const cookieParser = require('cookie-parser');
 const app = express();
@@ -35,5 +37,7 @@ app.use((req, res, next) => {
 })
 // * 3) Routes
 app.use('/api/auth', authRouter);
+app.use('/api/shop', productRouter);
+app.use('/api/shop', categoryRouter);
 
 module.exports = app;

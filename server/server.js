@@ -9,5 +9,5 @@ mongoose.connect(process.env.DATABASE_URI)
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
-    console.log(`App running on por ${port}...`);
+    console.log(`App running on port ${port}...`);
 });

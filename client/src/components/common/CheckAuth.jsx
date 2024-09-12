@@ -8,27 +8,59 @@ const CheckAuth = ({ children }) => {
     const location = useLocation();
 
 
-    if (!user && !(location.pathname.includes("/login") || location.pathname.includes("/register"))) {
-        return <Navigate to="/auth/login" />
-    }
-    if (user && user?.role === "user" && location.pathname.includes("/admin")) {
-        console.log("hi")
-        return <Navigate to="/access-denied" />
-    }
-    if (user && !(location.pathname.includes("/login") || location.pathname.includes("/register"))) {
-        if (user?.role === "admin") {
-            return <Navigate to="/admin/dashboard" />
+    if (location.pathname === "/") {
+        if (!user) {
+            return <Navigate to="/auth/login" />;
         } else {
-            console.log("klsjfld")
-            return <Navigate to="/" />
+            if (user?.role === "admin") {
+                return <Navigate to="/admin/dashboard" />;
+            } else {
+                return <Navigate to="/shop/home" />;
+            }
         }
     }
-    if (user && user?.role === "admin" && location.pathname.includes("/")) {
-        return <Navigate to="/admin/dashboard" />
+
+    if (
+        !user &&
+        !(
+            location.pathname.includes("/login") ||
+            location.pathname.includes("/register")
+        )
+    ) {
+        return <Navigate to="/auth/login" />;
     }
 
-    return <>{children}</>
+    if (
+        user &&
+        (location.pathname.includes("/login") ||
+            location.pathname.includes("/register"))
+    ) {
+        if (user?.role === "admin") {
+            return <Navigate to="/admin/dashboard" />;
+        } else {
+            return <Navigate to="/shop/home" />;
+        }
+    }
+
+    if (
+        user &&
+        user?.role !== "admin" &&
+        location.pathname.includes("admin")
+    ) {
+        return <Navigate to="/unauth-page" />;
+    }
+
+    if (
+        user &&
+        user?.role === "admin" &&
+        location.pathname.includes("shop")
+    ) {
+        return <Navigate to="/admin/dashboard" />;
+    }
+
+    return <>{children}</>;
 }
+
 
 
 export default CheckAuth;
